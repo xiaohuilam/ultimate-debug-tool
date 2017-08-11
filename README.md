@@ -55,7 +55,7 @@ public function YourControllerAction() {
                     ], 
                     'done' => [
                         Store::set('uid', 'json.data.user.id'),
-                        Store::set('password', 'param.password'),
+                        Store::set('password', 'param.password'),                 // Save data from parameters of this step-request
                     ]
                 ],
             ],
