@@ -175,10 +175,14 @@ window.save_entities = function(a){
 }
 window.i = 0;
 var f = function(action, cb){
+    var auth = window.authorization;
     var xhr = $.ajax({
         type: 'post',
         url: action.url,
         data: action.data,
+        headers: {
+            Authorization: auth 
+        },
         dataType: 'json',
         success: function(json, a, xhr){
             $('#log').text($('#log').text()+xhr.url+" OK"+" "+"\\r\\n");
