@@ -15,7 +15,8 @@ class App{
     public function render(){
         $script = '';
         $year = date('Y');
-        echo <<<HTML
+        $output = '';
+        $output .= <<<HTML
 <!DOCTYPE html>
 <!--[if lt IE 7]>
 <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -45,15 +46,15 @@ class App{
 HTML;
         foreach($this->groups as $group_name => $group_data)
         {
-            echo <<<HTML
+            $output .= <<<HTML
             <h4>$group_name</h4>
 HTML;
-            echo <<<HTML
+            $output .= <<<HTML
             <div class="form-group">
 HTML;
             foreach($group_data as $single_group)
             {
-                echo <<<HTML
+                $output .= <<<HTML
                 <div class="btn-group" role="group">
 HTML;
                 foreach($single_group as $btn_name => $steps)
@@ -101,19 +102,19 @@ HTML;
                     $script .= <<<HTML
                     ]; </script>
 HTML;
-                    echo <<<HTML
+                    $output .= <<<HTML
                     <button type="button" class="btn btn-default" data-key="$btn_key" onclick="ultimate_unit(this);">$btn_name</button>
 HTML;
                 }
-                echo <<<HTML
+                $output .= <<<HTML
                 </div>
 HTML;
             }
-            echo <<<HTML
+            $output .= <<<HTML
             </div>
 HTML;
         }
-        echo <<<HTML
+        $output .= <<<HTML
             <h4>请求体</h4>
                 <div class="entities">
 
@@ -132,9 +133,9 @@ HTML;
     <script src="//cdnjs-shanghai.oss-cn-shanghai.aliyuncs.com/jsmock.js"></script>
 HTML;
         $script .= '<script>window.hide_entities='.json_encode($this->hide_entities).';</script>';
-        echo $script;
+        $output .= $script;
 
-        echo <<<HTML
+        $output .= <<<HTML
 
     <script>
 window.setEntitie = function(a, b){
@@ -216,5 +217,6 @@ var ultimate_unit = function(a){
 </body>
 </html>
 HTML;
+        return $output;
     }
 }

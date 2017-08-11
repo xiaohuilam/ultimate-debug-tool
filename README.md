@@ -71,6 +71,8 @@ public function YourControllerAction() {
             ],
         ]
     ]);
+
+    echo $debug->render();
 }
 
 ```
