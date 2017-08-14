@@ -18,7 +18,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Xiaohuilam\\UltDebug\\": "src/"
+            "Xiaohuilam\\UltDebug\\": "src/UltDebug/"
         }
     },
     "autoload-dev": {
