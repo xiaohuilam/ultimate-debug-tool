@@ -1,6 +1,8 @@
 <?php
 namespace Xiaohuilam\UltDebug;
 class App{
+    var $condition;
+    var $msg_if_fail;
     var $goups = [];
     var $hide_entities = [];
 
@@ -10,6 +12,14 @@ class App{
 
     public function hideEntities($list){
         foreach($list as $k=>$v) $this->hide_entities[$v] = 1;
+    }
+
+    public function successIf($condition){
+        $this->condition = $condition;
+    }
+
+    public function msgIfFail($msg){
+        $this->msg_if_fail = $msg;
     }
 
     public function render(){
@@ -185,12 +195,19 @@ var f = function(action, cb){
         },
         dataType: 'json',
         success: function(json, a, xhr){
-            $('#log').text($('#log').text()+xhr.url+" OK"+" "+"\\r\\n");
             window.response = json;
+HTML;
+        $output .= 'if('.$this->condition."){
+            $('#log').text($('#log').text()+xhr.url+' OK'+' '+'\\r\\n');
+        }else{
+            $('#log').text($('#log').text()+xhr.url+' FAIL '+".$this->msg_if_fail."+' '+'\\r\\n');
+        }";
+
+        $output .= <<<HTML
             cb(json);
         },
         error: function(xhr, e) {
-            $('#log').text($('#log').text()+xhr.url+" FAIL"+"\\r\\n");
+            $('#log').text($('#log').text()+xhr.url+' FAIL'+' '+'\\r\\n');
             window.i = 0;
         }
     });
