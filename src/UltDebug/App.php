@@ -1,25 +1,25 @@
 <?php
 namespace Xiaohuilam\UltDebug;
 class App{
-    var $condition;
-    var $msg_if_fail;
-    var $goups = [];
-    var $hide_entities = [];
+    protected $condition;
+    protected $msg_if_fail;
+    protected $goups = [];
+    protected $hide_entities = [];
 
-    public function appendGroup($group, $data){
+    public function appendGroup(string $group = 'GROUP NAME', $data){
         $this->groups[$group] = $data;
     }
 
-    public function hideEntities($list){
+    public function hideEntities(array $list = []){
         foreach($list as $k=>$v) $this->hide_entities[$v] = 1;
     }
 
-    public function successIf($condition){
-        $this->condition = $condition;
+    public function successIf(string $condition_if_success = 'json.code == 10000'){
+        $this->condition = $condition_if_success;
     }
 
-    public function msgIfFail($msg){
-        $this->msg_if_fail = $msg;
+    public function msgIfFail(string $the_way_to_pick_msg = 'json.msg'){
+        $this->msg_if_fail = $the_way_to_pick_msg;
     }
 
     public function render(){
