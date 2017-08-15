@@ -198,16 +198,21 @@ var f = function(action, cb){
             window.response = json;
 HTML;
         $output .= 'if('.$this->condition."){
-            $('#log').text($('#log').text()+xhr.url+' OK'+' '+'\\r\\n');
+            $('#log').text($('#log').text()+xhr.url+'OK'+' '+'\\r\\n');
         }else{
-            $('#log').text($('#log').text()+xhr.url+' FAIL '+".$this->msg_if_fail."+' '+'\\r\\n');
+            $('#log').text($('#log').text()+xhr.url+' FAIL '+".$this->msg_if_fail."+' '+'\\r\\n'); return;
         }";
 
         $output .= <<<HTML
             cb(json);
         },
         error: function(xhr, e) {
-            $('#log').text($('#log').text()+xhr.url+' FAIL'+' '+'\\r\\n');
+            try{
+                eval('json='+xhr.responseText);
+                $('#log').text($('#log').text()+xhr.url+' FAIL '+".$this->msg_if_fail."+' '+'\\r\\n'); return;
+            }catch(e){
+                $('#log').text($('#log').text()+xhr.url+' FAIL'+' '+'\\r\\n');
+            }
             window.i = 0;
         }
     });
