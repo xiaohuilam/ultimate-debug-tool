@@ -181,7 +181,7 @@ window.getEntitie = function(a){
     return window[a];
 }
 window.save_entities = function(a){
-    window[$(a).attr('data-key')] = $(a).val();
+    window[$(a).attr('data-key')] = $('#'+$(a).attr('data-key')).val();
 }
 window.i = 0;
 var f = function(action, cb){
