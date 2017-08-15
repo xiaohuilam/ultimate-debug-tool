@@ -198,7 +198,7 @@ var f = function(action, cb){
             window.response = json;
 HTML;
         $output .= 'if('.$this->condition."){
-            $('#log').text($('#log').text()+xhr.url+'OK'+' '+'\\r\\n');
+            $('#log').text($('#log').text()+xhr.url+' OK'+' '+'\\r\\n');
         }else{
             $('#log').text($('#log').text()+xhr.url+' FAIL '+".$this->msg_if_fail."+' '+'\\r\\n'); return;
         }";
