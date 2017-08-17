@@ -53,6 +53,8 @@ class App{
         <form method="POST" enctype="multipart/form-data">
             <h2>DEBUGGER</h2>
             <div class="fileds">
+                <div class="col-md-6">
+                <div class="row">
 HTML;
         foreach($this->groups as $group_name => $group_data)
         {
@@ -125,17 +127,22 @@ HTML;
 HTML;
         }
         $output .= <<<HTML
-            <h4>请求体</h4>
+            </div>
+    </div>
+    </div>
+                <div class="col-md-6">
+                <div class="row">
+                <h4>请求体</h4>
                 <div class="entities">
 
                 </div>
+                </div>
+    </div>
                 <div class="form-group">
                     <textarea class="form-control" rows="10" style="min-height: 220px; resize: vertical;" id="log"></textarea>
                 </div>
-            </div>
-            <hr>
-            <p class="text-muted"><small>&copy; $year XIAOHUILAM's <a href="https://github.com/xiaohuilam/ultimate-debug-tool" target="_blank">ultimate_debug_tool</a>.</small></p>
         </form>
+        <p class="text-muted"><small>&copy; $year XIAOHUILAM's <a href="https://github.com/xiaohuilam/ultimate-debug-tool" target="_blank">ultimate_debug_tool</a>.</small></p>
     </div>
     <script src="//cdn.jsdelivr.net/jquery/1.12.4/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/bootstrap/3.3.7/js/bootstrap.min.js"></script>
