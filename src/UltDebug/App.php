@@ -197,6 +197,7 @@ var f = function(action, cb){
         success: function(json, a, xhr){
             window.response = json;
 HTML;
+        $('#log').scrollTop(50000);
         $output .= 'if('.$this->condition."){
             $('#log').text($('#log').text()+xhr.url+' OK'+' '+'\\r\\n');
         }else{
