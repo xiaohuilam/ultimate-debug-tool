@@ -198,6 +198,7 @@ window.save_entities = function(a){
 window.i = 0;
 var f = function(action, cb){
     var auth = window.authorization;
+    $('.btn').attr('disabled','disabled');
     var xhr = $.ajax({
         type: 'post',
         url: action.url,
@@ -206,6 +207,8 @@ var f = function(action, cb){
             Authorization: auth 
         },
         dataType: 'json',
+        complete: function(){
+        },
         success: function(json, a, xhr){
             window.response = json;
 HTML;
@@ -214,6 +217,7 @@ HTML;
             $('#log').text($('#log').text()+xhr.url+' OK'+' '+'\\r\\n');
         }else{
             if('.$this->reset_condition.'){
+                $('.btn').removeAttr('disabled');
                 window.i=0;
             }
             $('#log').text($('#log').text()+xhr.url+' FAIL '+".$this->msg_if_fail."+' '+'\\r\\n'); return;
@@ -229,6 +233,7 @@ HTML;
             }catch(e){
                 $('#log').text($('#log').text()+xhr.url+' FAIL'+' '+'\\r\\n');
             }
+            $('.btn').removeAttr('disabled');
             window.i = 0;
         }
     });
@@ -238,7 +243,10 @@ var ultimate_unit = function(a){
     var key = $(a).attr('data-key');
     var actions = $.extend(true, {}, window.maps[key]);
     if('undefined' == typeof window.response) window.response = {data:{}};
-    if('undefined' == typeof actions[window.i]) return window.i=0;
+    if('undefined' == typeof actions[window.i]){
+        $('.btn').removeAttr('disabled');
+        return window.i=0;
+    }
     var action = actions[window.i];
     for(var j in action.data){
         if('function' == typeof action.data[j]){
@@ -253,7 +261,14 @@ var ultimate_unit = function(a){
         window.i++;
         ultimate_unit(a);
     });
-    if(window.i >= actions.length - 1) setTimeout(function(){window.i = 0;}, 2000);
+    if(window.i >= actions.length - 1) setTimeout(function(){
+        $('.btn').removeAttr('disabled');
+        window.i = 0;
+    }, 2000);
+};
+window.onerror = function(){
+    $('.btn').removeAttr('disabled');
+    window.i = 0;
 };
     </script>
 </body>
