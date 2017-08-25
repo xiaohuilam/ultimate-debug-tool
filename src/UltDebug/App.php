@@ -51,7 +51,7 @@ class App{
     .modal-footer {border-top: none;}
     select.form-control,select.form-control:hover,select.form-control:focus,select.form-control:active { line-height: normal; outline: 1px solid #D1D1D1; outline-offset: -1px; border: 0; box-shadow: inset 0 2px 1px rgba(0,0,0,.075); text-indent: 5px; }
     </style>
-    <script> window.maps = {};</script>
+    <script> window.maps = {};if('undefined' == typeof window._timeout) window._timeout = 5000;</script>
 </head>
 <body>
     <div class="col-md-8 col-md-offset-2">
@@ -207,6 +207,7 @@ var f = function(action, cb){
             Authorization: auth 
         },
         dataType: 'json',
+        timeout: window._timeout,
         complete: function(){
         },
         success: function(json, a, xhr){
