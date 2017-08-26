@@ -4,7 +4,9 @@ The perfect function based test toolkit fot PHP composer projects.
 
 ## Instsallation
 
+```bash
 composer require xiaohuilam/ultimate-debug-tool:"dev-master"
+```
 
 ## Usage
 
