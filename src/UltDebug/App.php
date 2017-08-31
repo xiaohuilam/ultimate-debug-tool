@@ -228,14 +228,14 @@ HTML;
             cb(json);
         },
         error: function(xhr, e) {
+            $('.btn').removeAttr('disabled');
+            window.i = 0;
             try{
                 eval('json='+xhr.responseText);
                 $('#log').text($('#log').text()+xhr.url+' FAIL '+".$this->msg_if_fail."+' '+'\\r\\n'); return;
             }catch(e){
                 $('#log').text($('#log').text()+xhr.url+' FAIL'+' '+'\\r\\n');
             }
-            $('.btn').removeAttr('disabled');
-            window.i = 0;
         }
     });
     xhr.url = action.url;
