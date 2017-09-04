@@ -10,6 +10,9 @@ composer require xiaohuilam/ultimate-debug-tool:"dev-master"
 
 ## Usage
 
+ [语法介绍](https://github.com/xiaohuilam/test-ting-work/wiki/%E8%AF%AD%E6%B3%95%E4%BB%8B%E7%BB%8D)
+
+
 ```php
 <?php
 
