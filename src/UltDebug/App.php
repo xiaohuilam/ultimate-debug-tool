@@ -131,16 +131,33 @@ HTML;
                       </div>
                       <div class="form-group">
                           <p class="text-muted">响应:</p>
-                          <table class="table table-bordered">
-                              <thead>
-                                  <tr>
-                                      <th>NAME</th>
-                                      <th>FORMAT</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                            </tbody>
-                        </table>
+<pre>
+HTML;
+                        $data = [];
+                        foreach($step['done'] as $key=>$value)
+                        {
+                            if($value instanceof StoreSet && preg_match('/^json\.data/', $value->value))
+                            {
+                                $kk = substr($value->value, 10);
+                                $dd = explode('.', $kk);
+
+                                $kl = [];
+
+                                $now = &$data;
+                                foreach($dd as $i => $d)
+                                {
+                                    if(!isset($now[$d])) $now[$d] = [];
+                                    if($d == array_reverse($dd)[0]) $now[$d] = '';
+                                    $now = &$now[$d];
+                                }
+
+                            }
+                        }
+
+                        $output .= json_encode(['code' => 1000, 'msg' => 'OK', 'data' => $data], JSON_PRETTY_PRINT);
+                        $output .= 
+                            <<<HTML
+                        </pre>
                       </div>
                     </div>
                 </div>
