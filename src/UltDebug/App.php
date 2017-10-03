@@ -329,7 +329,7 @@ HTML;
     <script src="//cdn.jsdelivr.net/jquery/1.12.4/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="//cdn.jsdelivr.net/bootbox/4.4.0/bootbox.min.js"></script>
-    <script src="//cdnjs-shanghai.oss-cn-shanghai.aliyuncs.com/jsmock.js"></script>
+    <script src="//cdn.jsdelivr.net/gh/fent/randexp.js@0.4.3/build/randexp.min.js"></script>
 HTML;
         $script .= '<script>window.hide_entities='.json_encode($this->hide_entities).';</script>';
         $output .= $script;
