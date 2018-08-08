@@ -155,7 +155,7 @@ HTML;
                         }
 
                         $output .= json_encode(['code' => 1000, 'msg' => 'OK', 'data' => $data], JSON_PRETTY_PRINT);
-                        $output .= 
+                        $output .=
                             <<<HTML
                         </pre>
                       </div>
@@ -183,7 +183,7 @@ HTML;
 HTML;
             }
         }
-        
+
         return $output;
     }
 
@@ -257,42 +257,47 @@ HTML;
                     $script .= <<<HTML
                     <script> window.maps['$btn_key'] = [
 HTML;
-                    foreach($steps as $step)
+                    foreach($steps as $step_key => $step)
                     {
-                        $script .= '{url: "'.$step['url'].'",data: {';
-                        foreach($step['data'] as $key=>$value)
-                        {
-                            $script .= $key.':';
-                            if($value instanceof RegExp)
+                        try{
+                            $script .= '{url: "'.$step['url'].'",data: {';
+                            foreach($step['data'] as $key=>$value)
                             {
-                                $script .= $value->getRegExp();
-                            }
-                            else if($value instanceof StoreGet)
-                            {
-                                $script .=$value->get();
-                            }
-                            else
-                            {
-                                $script .= '"'.htmlspecialchars($value).'"';
-                            }
+                                $script .= $key.':';
+                                if($value instanceof RegExp)
+                                {
+                                    $script .= $value->getRegExp();
+                                }
+                                else if($value instanceof StoreGet)
+                                {
+                                    $script .=$value->get();
+                                }
+                                else
+                                {
+                                    $script .= '"'.htmlspecialchars($value).'"';
+                                }
 
-                            $script .= ",";
-                        }
-                        $script .= '},callback:function(param, json){'; 
-
-                        if(isset($step['done']) && is_array($step['done']))
-                        {
-                            foreach($step['done'] as $each)
-                            {
-                               if($each instanceOf StoreSet)
-                               {
-                                   $script .= $each->set();
-                               }
+                                $script .= ",";
                             }
+                            $script .= '},callback:function(param, json){';
+
+                            if(isset($step['done']) && is_array($step['done']))
+                            {
+                                foreach($step['done'] as $each)
+                                {
+                                if($each instanceOf StoreSet)
+                                {
+                                    $script .= $each->set();
+                                }
+                                }
+                            }
+                            $script .= '}},';
+                        }catch(\Exception $e){
+                            //print_r($step);
+                            throw $e;
                         }
-                        $script .= '}},';
                     }
-        
+
                     $script .= <<<HTML
                     ]; </script>
 HTML;
@@ -381,7 +386,7 @@ var f = function(action, cb){
         url: action.url,
         data: action.data,
         headers: {
-            Authorization: auth 
+            Authorization: 'Bearer ' + auth
         },
         dataType: 'json',
         timeout: window._timeout,
@@ -390,7 +395,7 @@ var f = function(action, cb){
         success: function(json, a, xhr){
             window.response = json;
 HTML;
-        
+
         $output .= '$("#log").scrollTop(50000); if('.$this->condition."){
             $('#log').text($('#log').text()+xhr.url+' OK'+' '+'\\r\\n');
         }else{
