@@ -190,16 +190,14 @@
                 function (response) {
                     response.json().then(
                         function (json) {
-                            if ({!!$condition!!
-                        }) {
+                            if ({!!$condition!!}) {
                         document.querySelector('#log').innerHTML = document.querySelector('#log').innerHTML + response.url + ' OK' + ' ' + '\r\n';
                     } else {
                         window.i = 0;
-                        document.querySelector('#log').innerHTML = document.querySelector('#log').innerHTML + response.url + ' FAIL ' + {!!$msg_if_fail!!
-                    } + ' ' + '\r\n'; return;
+                        document.querySelector('#log').innerHTML = document.querySelector('#log').innerHTML + response.url + ' FAIL ' + {!!$msg_if_fail!!} + ' ' + '\r\n'; return;
                 }
 
-                            cb(json);
+                cb(json);
         },
         function(reason) {
             window.i = 0;
