@@ -2,28 +2,28 @@
     "name": "xiaohuilam/ultimate-debug-tool",
     "type": "library",
     "authors": [
-      {
-        "name": "xiaohuilam"
-      }
+        {
+            "name": "蓝小灰"
+        }
     ],
-    "prefer-stable": true,
-    "minimum-stability": "dev",
     "require": {
-        "php":                    ">=5.6",
-        "ext-json":               "*"
+        "php": ">=5.6",
+        "ext-json": "*"
     },
     "require-dev": {
-        "phpunit/phpcov":         "~2.0|~3.0",
-        "phpunit/phpunit":        "~4.0|~5.0"
+        "phpunit/phpcov": "~2.0|~3.0",
+        "phpunit/phpunit": "~4.0|~5.0"
     },
     "autoload": {
         "psr-4": {
             "Xiaohuilam\\UltDebug\\": "src/UltDebug/"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "Xiaohuilam\\UltDebug\\Tests\\": "tests/"
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Xiaohuilam\\UltDebug\\ServiceProvider"
+            ]
         }
     }
 }

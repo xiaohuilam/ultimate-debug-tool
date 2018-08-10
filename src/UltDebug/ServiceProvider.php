@@ -4,7 +4,7 @@ namespace Xiaohuilam\UltDebug;
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     /**
-     * 启动任意应用服务。
+     * 启动
      *
      * @return void
      */
