@@ -228,7 +228,6 @@ HTML;
                     <li role="presentation" class="dropdown">
                         <a href="#" id="tabDrop1" class="dropdown-toggle" data-toggle="dropdown" aria-controls="tabDrop1-contents" aria-expanded="false">Document <span class="caret"></span></a>
                         <ul class="dropdown-menu" aria-labelledby="tabDrop1" id="tabDrop1-contents">
-                            <li><a href="?action=document&format=html" target="_blank">HTML</a></li>
                             <li><a href="?action=document&format=markdown" target="_blank">Markdown</a></li>
                         </ul>
                     </li>
@@ -331,10 +330,10 @@ HTML;
         </form>
         <p class="text-muted"><small>&copy; $year XIAOHUILAM's <a href="https://github.com/xiaohuilam/ultimate-debug-tool" target="_blank">ultimate_debug_tool</a>.</small></p>
     </div>
-    <script src="//cdn.jsdelivr.net/jquery/1.12.4/jquery.min.js"></script>
-    <script src="//cdn.jsdelivr.net/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="//cdn.jsdelivr.net/bootbox/4.4.0/bootbox.min.js"></script>
-    <script src="//cdn.jsdelivr.net/gh/fent/randexp.js@0.4.3/build/randexp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/bootbox/4.4.0/bootbox.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/fent/randexp.js@0.4.3/build/randexp.min.js"></script>
 HTML;
         $script .= '<script>window.hide_entities='.json_encode($this->hide_entities).';</script>';
         $output .= $script;
