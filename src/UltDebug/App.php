@@ -395,6 +395,7 @@ var f = function(action, cb){
             window.response = json;
 HTML;
 
+        $msg = $this->msg_if_fail;
         $output .= '$("#log").scrollTop(50000); if('.$this->condition."){
             $('#log').text($('#log').text()+xhr.url+' OK'+' '+'\\r\\n');
         }else{
@@ -402,7 +403,7 @@ HTML;
                 $('.btn').removeAttr('disabled');
                 window.i=0;
             }
-            $('#log').text($('#log').text()+xhr.url+' FAIL '+".$this->msg_if_fail."+' '+'\\r\\n'); return;
+            $('#log').text($('#log').text()+xhr.url+' FAIL '+ $msg +' '+'\\r\\n'); return;
         }";
 
         $output .= <<<HTML
@@ -413,7 +414,7 @@ HTML;
             window.i = 0;
             try{
                 eval('json='+xhr.responseText);
-                $('#log').text($('#log').text()+xhr.url+' FAIL '+".$this->msg_if_fail."+' '+'\\r\\n'); return;
+                $('#log').text($('#log').text()+xhr.url+' FAIL '+ $msg +' '+'\\r\\n'); return;
             }catch(e){
                 $('#log').text($('#log').text()+xhr.url+' FAIL'+' '+'\\r\\n');
             }
