@@ -120,22 +120,21 @@
                 <a href="https://github.com/xiaohuilam/ultimate-debug-tool" target="_blank">ultimate_debug_tool</a>.</small>
         </p>
     </div>
-    <script src="https://cdn.jsdelivr.net/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/bootbox/4.4.0/bootbox.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/gh/fent/randexp.js@0.4.3/build/randexp.min.js"></script>
     <script>window.hide_entities = [];</script>
     <script>
         window.setEntitie = function (a, b) {
             window[a] = b;
             if ('undefined' != typeof window.hide_entities[a]) return;
-            if ($('#' + a).length == 0) {
-                var dom = $('<input type="text" class="form-control" placeholder="" id="" style="border-right: 0;">');
-                dom.attr({
-                    placeholder: a,
-                    id: a
-                });
-                dom.val(b);
+            if (document.querySelectorAll('#' + a).length == 0) {
+                var dom = document.createElement('input');
+                dom.setAttribute('class', 'form-control');
+                dom.setAttribute('style', 'border-right: 0');
+                dom.setAttribute('id', a);
+                dom.setAttribute('placeholder', a);
+                dom.value = b;
+
                 var str = [
                     '<div class="form-group">',
                     '    <div class="col-md-6">',
@@ -145,70 +144,88 @@
                     '    <button type="button" class="btn btn-default" onclick="save_auth();">保存</button>',
                     '</div>'
                 ].join('');
-                d = $(str);
-                d.find('.xx').append(dom);
-                d.find('button').text('修改' + a);
-                d.find('button').attr('data-key', a);
-                d.find('button').attr('onclick', 'window.save_entities(this);');
-                $('.entities').append(d);
+
+                var div = document.createElement('div');
+                div.innerHTML = str.trim();
+                div.setAttribute('class', 'hide');
+                d = div.firstChild;
+
+
+                d.querySelector('.xx').append(dom);
+                d.querySelector('button').innerHTML = '修改' + a;
+                d.querySelector('button').setAttribute('data-key', a);
+                d.querySelector('button').setAttribute('onclick', 'window.save_entities(this);');
+
+                document.querySelector('.entities').append(d);
             } else {
-                $('#' + a).val(b);
+                document.querySelector('#' + a).value = b;
             }
         };
         window.getEntitie = function (a) {
             return window[a];
         }
         window.save_entities = function (a) {
-            window[$(a).attr('data-key')] = $('#' + $(a).attr('data-key')).val();
+            window[a.getAttribute('data-key')] = a.getAttribute('data-key').value;
         }
         window.i = 0;
         var f = function (action, cb) {
             var auth = window.authorization;
-            $('.btn').attr('disabled', 'disabled');
-            var xhr = $.ajax({
-                type: 'post',
-                url: action.url,
-                data: action.data,
-                headers: {
-                    Authorization: 'Bearer ' + auth
-                },
-                dataType: 'json',
-                timeout: window._timeout,
-                complete: function () {
-                },
-                success: function (json, a, xhr) {
-                    window.response = json; $("#log").scrollTop(50000); if (json.success == true) {
-                        $('#log').text($('#log').text() + xhr.url + ' OK' + ' ' + '\r\n');
-                    } else {
-                        if ('.false.') {
-                            $('.btn').removeAttr('disabled');
-                            window.i = 0;
-                        }
-                        $('#log').text($('#log').text() + xhr.url + ' FAIL ' + json.errMsg + ' ' + '\r\n'); return;
-                    } cb(json);
-                },
-                error: function (xhr, e) {
-                    $('.btn').removeAttr('disabled');
-                    window.i = 0;
-                    try {
-                        eval('json=' + xhr.responseText);
-                        $('#log').text($('#log').text() + xhr.url + ' FAIL ' + json.errMsg + ' ' + '\r\n'); return;
-                    } catch (e) {
-                        $('#log').text($('#log').text() + xhr.url + ' FAIL' + ' ' + '\r\n');
+            document.querySelector('.btn').setAttribute('disabled', 'disabled');
+
+            fetch(
+                action.url,
+                request_hool(
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(action.data),
+                        headers: {
+                            "Authorization": 'Bearer ' + auth,
+                            "Content-Type": "application/json"
+                        },
+                        dataType: 'json',
+                        timeout: window._timeout,
                     }
+                )
+            ).then(
+                function (response) {
+                    response.json().then(
+                        function (json) {
+                            if ({!!$condition!!
+                        }) {
+                        document.querySelector('#log').innerHTML = document.querySelector('#log').innerHTML + response.url + ' OK' + ' ' + '\r\n';
+                    } else {
+                        window.i = 0;
+                        document.querySelector('#log').innerHTML = document.querySelector('#log').innerHTML + response.url + ' FAIL ' + {!!$msg_if_fail!!
+                    } + ' ' + '\r\n'; return;
                 }
-            });
-            xhr.url = action.url;
+
+                            cb(json);
+        },
+        function(reason) {
+            window.i = 0;
+        }
+                    )
+                },
+        function(reason) {
+
+        }
+            );
         };
         var ultimate_unit = function (a) {
-            var key = $(a).attr('data-key');
-            var actions = $.extend(true, {}, window.maps[key]);
+            var key = a.getAttribute('data-key');
+            var actions = JSON.parse(JSON.stringify(window.maps[key]));
+
             if ('undefined' == typeof window.response) window.response = { data: {} };
             if ('undefined' == typeof actions[window.i]) {
-                $('.btn').removeAttr('disabled');
+                document.querySelectorAll('.btn').forEach(function (btn) {
+                    btn.removeAttribute('disabled');
+                });
                 return window.i = 0;
             }
             var action = actions[window.i];
+
+            action.callback = window.maps[key][window.i].callback;
+
             for (var j in action.data) {
                 if ('object' == typeof action.data[j]) {
                     if (action.data[j].type == "Xiaohuilam\\UltDebug\\RegExp") {
@@ -225,18 +242,22 @@
                 ultimate_unit(a);
             });
             if (window.i >= actions.length - 1) setTimeout(function () {
-                $('.btn').removeAttr('disabled');
+                document.querySelectorAll('.btn').forEach(function (btn) {
+                    btn.removeAttribute('disabled');
+                });
                 window.i = 0;
             }, 2000);
         };
         window.onerror = function () {
-            $('.btn').removeAttr('disabled');
+            document.querySelectorAll('.btn').forEach(function (btn) {
+                btn.removeAttribute('disabled');
+            });
             window.i = 0;
         };
     </script>
     <script>
-        $("body").on("click", ".btn[data-key=\"authorization\"]", function (e) { localStorage.satellizer_token = $("input#authorization").val(); })
+        var request_hool = function (payload) {
+        };
     </script>
 </body>
-
 </html>
