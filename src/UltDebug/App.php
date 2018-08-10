@@ -5,11 +5,11 @@ use Illuminate\Support\Facades\View;
 
 class App
 {
-    protected $condition;
-    protected $msg_if_fail;
-    protected $goups = [];
-    protected $hide_entities = [];
-    protected $reset_condition = 'false';
+    public $condition;
+    public $msg_if_fail;
+    public $goups = [];
+    public $hide_entities = [];
+    public $reset_condition = 'false';
 
     /**
      * 添加一个组
