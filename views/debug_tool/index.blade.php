@@ -174,7 +174,7 @@
 
             fetch(
                 action.url,
-                request_hool(
+                request_hook(
                     {
                         method: 'POST',
                         body: JSON.stringify(action.data),
@@ -254,7 +254,7 @@
         };
     </script>
     <script>
-        var request_hool = function (payload) {
+        var request_hook = function (payload) {
         };
     </script>
 </body>
