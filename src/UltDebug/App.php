@@ -1,33 +1,41 @@
 <?php
 namespace Xiaohuilam\UltDebug;
-class App{
+
+class App
+{
     protected $condition;
     protected $msg_if_fail;
     protected $goups = [];
     protected $hide_entities = [];
     protected $reset_condition = 'false';
 
-    public function appendGroup(string $group = 'GROUP NAME', $data){
+    public function appendGroup(string $group = 'GROUP NAME', $data)
+    {
         $this->groups[$group] = $data;
     }
 
-    public function hideEntities(array $list = []){
-        foreach($list as $k=>$v) $this->hide_entities[$v] = 1;
+    public function hideEntities(array $list = [])
+    {
+        foreach ($list as $k => $v) $this->hide_entities[$v] = 1;
     }
 
-    public function resetIf(string $condition_if = 'json.code == 2015'){
+    public function resetIf(string $condition_if = 'json.code == 2015')
+    {
         $this->reset_condition = $condition_if;
     }
 
-    public function successIf(string $condition_if_success = 'json.code == 10000'){
+    public function successIf(string $condition_if_success = 'json.code == 10000')
+    {
         $this->condition = $condition_if_success;
     }
 
-    public function msgIfFail(string $the_way_to_pick_msg = 'json.msg'){
+    public function msgIfFail(string $the_way_to_pick_msg = 'json.msg')
+    {
         $this->msg_if_fail = $the_way_to_pick_msg;
     }
 
-    public function exportHtml() {
+    public function exportHtml()
+    {
 
         $output = '';
         $output .= <<<HTML
@@ -55,24 +63,20 @@ class App{
 <body>
     <div class="col-md-8 col-md-offset-2">
 HTML;
-        foreach($this->groups as $group_name => $group_data)
-        {
+        foreach ($this->groups as $group_name => $group_data) {
             $output .= <<<HTML
             <h4>$group_name</h4>
 HTML;
 
-            foreach($group_data as $single_group)
-            {
+            foreach ($group_data as $single_group) {
                 $output .= <<<HTML
                         <div>
 HTML;
-                foreach($single_group as $btn_name => $steps)
-                {
+                foreach ($single_group as $btn_name => $steps) {
                     $output .= <<<HTML
                     <h3 class="button">$btn_name</h3>
 HTML;
-                    foreach($steps as $step)
-                    {
+                    foreach ($steps as $step) {
                         $url = $step['url'];
                         $output .= <<<HTML
                         <div class="panel panel-default">
@@ -92,32 +96,26 @@ HTML;
                                           </thead>
                                           <tbody>
 HTML;
-                        if(!$step['data'])
+                        if (!$step['data'])
                             $output .= '<tr><td colspan="2">none</td></tr>';
 
-                        foreach($step['data'] as $key=>$value)
-                        {
+                        foreach ($step['data'] as $key => $value) {
                             $output .= <<<HTML
 <tr>
 <th>$key</th>
 HTML;
-                            if($value instanceof RegExp)
-                            {
+                            if ($value instanceof RegExp) {
                                 $s = $value->getRegExp();
                                 $output .= <<<HTML
 <td>$s</td>
 HTML;
-                            }
-                            else if($value instanceof StoreGet)
-                            {
-                                $s = '前面返回的'.$value->key;
+                            } else if ($value instanceof StoreGet) {
+                                $s = '前面返回的' . $value->key;
                                 $output .= <<<HTML
 <td>$s</td>
 HTML;
-                            }
-                            else
-                            {
-                                $s = ''.htmlspecialchars($value).'';
+                            } else {
+                                $s = '' . htmlspecialchars($value) . '';
                                 $output .= <<<HTML
 <td>$s</td>
 HTML;
@@ -134,20 +132,17 @@ HTML;
 <pre>
 HTML;
                         $data = [];
-                        foreach($step['done'] as $key=>$value)
-                        {
-                            if($value instanceof StoreSet && preg_match('/^json\.data/', $value->value))
-                            {
+                        foreach ($step['done'] as $key => $value) {
+                            if ($value instanceof StoreSet && preg_match('/^json\.data/', $value->value)) {
                                 $kk = substr($value->value, 10);
                                 $dd = explode('.', $kk);
 
                                 $kl = [];
 
                                 $now = &$data;
-                                foreach($dd as $i => $d)
-                                {
-                                    if(!isset($now[$d])) $now[$d] = [];
-                                    if($d == array_reverse($dd)[0]) $now[$d] = '';
+                                foreach ($dd as $i => $d) {
+                                    if (!isset($now[$d])) $now[$d] = [];
+                                    if ($d == array_reverse($dd)[0]) $now[$d] = '';
                                     $now = &$now[$d];
                                 }
 
@@ -174,7 +169,7 @@ HTML;
                             }
                         }
                          */
-                $output .= <<<HTML
+                        $output .= <<<HTML
 HTML;
                     }
                 }
@@ -187,9 +182,10 @@ HTML;
         return $output;
     }
 
-    public function render(){
-        if(isset($_GET['action'])){
-            if($_GET['action'] == 'document' && @$_GET['format'] == 'html'){
+    public function render()
+    {
+        if (isset($_GET['action'])) {
+            if ($_GET['action'] == 'document' && @$_GET['format'] == 'html') {
                 return $this->exportHtml();
             }
         }
@@ -219,7 +215,7 @@ HTML;
     <script> window.maps = {};if('undefined' == typeof window._timeout) window._timeout = 5000;</script>
 </head>
 <body>
-    <div class="col-md-8 col-md-offset-2">
+    <div class="col-md-10 col-md-offset-1">
         <form method="POST" enctype="multipart/form-data">
             <h2>DEBUGGER</h2>
             <div class="form-group">
@@ -234,64 +230,51 @@ HTML;
                 </ul>
             </div>
             <div class="fileds">
-                <div class="col-md-6">
+                <div class="col-md-8">
                 <div class="row">
 HTML;
-        foreach($this->groups as $group_name => $group_data)
-        {
+        foreach ($this->groups as $group_name => $group_data) {
             $output .= <<<HTML
             <h4>$group_name</h4>
 HTML;
             $output .= <<<HTML
             <div class="form-group">
 HTML;
-            foreach($group_data as $single_group)
-            {
+            foreach ($group_data as $single_group) {
                 $output .= <<<HTML
                 <div class="btn-group" role="group">
 HTML;
-                foreach($single_group as $btn_name => $steps)
-                {
-                    $btn_key = 'e'.md5($group_name.'|'.$btn_name);
+                foreach ($single_group as $btn_name => $steps) {
+                    $btn_key = 'e' . md5($group_name . '|' . $btn_name);
                     $script .= <<<HTML
                     <script> window.maps['$btn_key'] = [
 HTML;
-                    foreach($steps as $step_key => $step)
-                    {
-                        try{
-                            $script .= '{url: "'.$step['url'].'",data: {';
-                            foreach($step['data'] as $key=>$value)
-                            {
-                                $script .= $key.':';
-                                if($value instanceof RegExp)
-                                {
+                    foreach ($steps as $step_key => $step) {
+                        try {
+                            $script .= '{url: "' . $step['url'] . '",data: {';
+                            foreach ($step['data'] as $key => $value) {
+                                $script .= $key . ':';
+                                if ($value instanceof RegExp) {
                                     $script .= $value->getRegExp();
-                                }
-                                else if($value instanceof StoreGet)
-                                {
-                                    $script .=$value->get();
-                                }
-                                else
-                                {
-                                    $script .= '"'.htmlspecialchars($value).'"';
+                                } else if ($value instanceof StoreGet) {
+                                    $script .= $value->get();
+                                } else {
+                                    $script .= '"' . htmlspecialchars($value) . '"';
                                 }
 
                                 $script .= ",";
                             }
                             $script .= '},callback:function(param, json){';
 
-                            if(isset($step['done']) && is_array($step['done']))
-                            {
-                                foreach($step['done'] as $each)
-                                {
-                                if($each instanceOf StoreSet)
-                                {
-                                    $script .= $each->set();
-                                }
+                            if (isset($step['done']) && is_array($step['done'])) {
+                                foreach ($step['done'] as $each) {
+                                    if ($each instanceof StoreSet) {
+                                        $script .= $each->set();
+                                    }
                                 }
                             }
                             $script .= '}},';
-                        }catch(\Exception $e){
+                        } catch (\Exception $e) {
                             //print_r($step);
                             throw $e;
                         }
@@ -316,7 +299,7 @@ HTML;
             </div>
     </div>
     </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                 <div class="row">
                 <h4>请求体</h4>
                 <div class="entities">
@@ -335,7 +318,7 @@ HTML;
     <script src="https://cdn.jsdelivr.net/bootbox/4.4.0/bootbox.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/fent/randexp.js@0.4.3/build/randexp.min.js"></script>
 HTML;
-        $script .= '<script>window.hide_entities='.json_encode($this->hide_entities).';</script>';
+        $script .= '<script>window.hide_entities=' . json_encode($this->hide_entities) . ';</script>';
         $output .= $script;
 
         $output .= <<<HTML
@@ -353,7 +336,7 @@ window.setEntitie = function(a, b){
         dom.val(b);
         var str = [
             '<div class="form-group">',
-            '    <div class="col-md-4">',
+            '    <div class="col-md-6">',
             '        <div class="row xx">',
             '        </div>',
             '    </div>',
@@ -396,7 +379,7 @@ var f = function(action, cb){
 HTML;
 
         $msg = $this->msg_if_fail;
-        $output .= '$("#log").scrollTop(50000); if('.$this->condition."){
+        $output .= '$("#log").scrollTop(50000); if(' . $this->condition . "){
             $('#log').text($('#log').text()+xhr.url+' OK'+' '+'\\r\\n');
         }else{
             if('.$this->reset_condition.'){
