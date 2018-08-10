@@ -235,13 +235,6 @@
         };
     </script>
     <script>
-        $.ajaxSetup(
-            {
-                beforeSend: function (xhr, settings) {
-                    xhr.setRequestHeader("X-CSRF-TOKEN", "16W0Ga9wrpewneQVpvbUA9Du9jMsPKyMbKgH9N62");
-                }
-            }
-        );
         $("body").on("click", ".btn[data-key=\"authorization\"]", function (e) { localStorage.satellizer_token = $("input#authorization").val(); })
     </script>
 </body>
