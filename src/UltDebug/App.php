@@ -1,6 +1,8 @@
 <?php
 namespace Xiaohuilam\UltDebug;
 
+use Illuminate\Support\Facades\View;
+
 class App
 {
     protected $condition;
@@ -34,161 +36,10 @@ class App
         $this->msg_if_fail = $the_way_to_pick_msg;
     }
 
-    public function exportHtml()
-    {
-
-        $output = '';
-        $output .= <<<HTML
-<!DOCTYPE html>
-<!--[if lt IE 7]>
-<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>
-<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>
-<html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js"> <!--<![endif]-->
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
-    <meta name="format-detection" content="telephone=no"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.7/css/bootstrap.min.css">
-    <style>
-    *{border-radius: 0!important}
-    .modal-footer {border-top: none;}
-    select.form-control,select.form-control:hover,select.form-control:focus,select.form-control:active { line-height: normal; outline: 1px solid #D1D1D1; outline-offset: -1px; border: 0; box-shadow: inset 0 2px 1px rgba(0,0,0,.075); text-indent: 5px; }
-    </style>
-    <script> window.maps = {};if('undefined' == typeof window._timeout) window._timeout = 5000;</script>
-</head>
-<body>
-    <div class="col-md-8 col-md-offset-2">
-HTML;
-        foreach ($this->groups as $group_name => $group_data) {
-            $output .= <<<HTML
-            <h4>$group_name</h4>
-HTML;
-
-            foreach ($group_data as $single_group) {
-                $output .= <<<HTML
-                        <div>
-HTML;
-                foreach ($single_group as $btn_name => $steps) {
-                    $output .= <<<HTML
-                    <h3 class="button">$btn_name</h3>
-HTML;
-                    foreach ($steps as $step) {
-                        $url = $step['url'];
-                        $output .= <<<HTML
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                  <div class="form-group">
-                                      <p class="text-muted">URL:</p>
-                                      <code>$url</code>
-                                  </div>
-                                  <div class="form-group">
-                                      <p class="text-muted">请求参数:</p>
-                                      <table class="table table-bordered">
-                                          <thead>
-                                              <tr>
-                                                  <th>NAME</th>
-                                                  <th>FORMAT</th>
-                                              </tr>
-                                          </thead>
-                                          <tbody>
-HTML;
-                        if (!$step['data'])
-                            $output .= '<tr><td colspan="2">none</td></tr>';
-
-                        foreach ($step['data'] as $key => $value) {
-                            $output .= <<<HTML
-<tr>
-<th>$key</th>
-HTML;
-                            if ($value instanceof RegExp) {
-                                $s = $value->getRegExp();
-                                $output .= <<<HTML
-<td>$s</td>
-HTML;
-                            } else if ($value instanceof StoreGet) {
-                                $s = '前面返回的' . $value->key;
-                                $output .= <<<HTML
-<td>$s</td>
-HTML;
-                            } else {
-                                $s = '' . htmlspecialchars($value) . '';
-                                $output .= <<<HTML
-<td>$s</td>
-HTML;
-                            }
-
-                            $output .= "</tr>";
-                        }
-                        $output .= <<<HTML
-                            </tbody>
-                        </table>
-                      </div>
-                      <div class="form-group">
-                          <p class="text-muted">响应:</p>
-<pre>
-HTML;
-                        $data = [];
-                        foreach ($step['done'] as $key => $value) {
-                            if ($value instanceof StoreSet && preg_match('/^json\.data/', $value->value)) {
-                                $kk = substr($value->value, 10);
-                                $dd = explode('.', $kk);
-
-                                $kl = [];
-
-                                $now = &$data;
-                                foreach ($dd as $i => $d) {
-                                    if (!isset($now[$d])) $now[$d] = [];
-                                    if ($d == array_reverse($dd)[0]) $now[$d] = '';
-                                    $now = &$now[$d];
-                                }
-
-                            }
-                        }
-
-                        $output .= json_encode(['code' => 1000, 'msg' => 'OK', 'data' => $data], JSON_PRETTY_PRINT);
-                        $output .=
-                            <<<HTML
-                        </pre>
-                      </div>
-                    </div>
-                </div>
-HTML;
-
-                        /*
-                        if(isset($step['done']) && is_array($step['done']))
-                        {
-                            foreach($step['done'] as $each)
-                            {
-                               if($each instanceOf StoreSet)
-                               {
-                               }
-                            }
-                        }
-                         */
-                        $output .= <<<HTML
-HTML;
-                    }
-                }
-                $output .= <<<HTML
-                </div>
-HTML;
-            }
-        }
-
-        return $output;
-    }
-
     public function render()
     {
-        if (isset($_GET['action'])) {
-            if ($_GET['action'] == 'document' && @$_GET['format'] == 'html') {
-                return $this->exportHtml();
-            }
-        }
+        return View::make('debug_tool.index', (array) $this)->render();
+
         $script = '';
         $year = date('Y');
         $output = '';
@@ -222,9 +73,9 @@ HTML;
                 <ul id="tabs" class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active"><a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="true">Live demo</a></li>
                     <li role="presentation" class="dropdown">
-                        <a href="#" id="tabDrop1" class="dropdown-toggle" data-toggle="dropdown" aria-controls="tabDrop1-contents" aria-expanded="false">Document <span class="caret"></span></a>
-                        <ul class="dropdown-menu" aria-labelledby="tabDrop1" id="tabDrop1-contents">
-                            <li><a href="?action=document&format=markdown" target="_blank">Markdown</a></li>
+                        <a href="#" id="tabDrop1" class="dropdown-toggle" data-toggle="dropdown" aria-controls="expoort" aria-expanded="false">Document <span class="caret"></span></a>
+                        <ul class="dropdown-menu" aria-labelledby="tabDrop1" id="expoort">
+                            <li><a href="javascript:void(0);">Markdown</a></li>
                         </ul>
                     </li>
                 </ul>
