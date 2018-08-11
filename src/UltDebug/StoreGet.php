@@ -1,9 +1,9 @@
 <?php
+
 namespace Xiaohuilam\UltDebug;
 
 class StoreGet
 {
-
     public $type = self::class;
 
     public $key = null;
@@ -12,9 +12,9 @@ class StoreGet
     {
         $this->key = $key;
     }
+
     public function get()
     {
-        return 'function(){return window.getEntitie("' . $this->key . '");}';
+        return 'function(){return window.getEntitie("'.$this->key.'");}';
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Xiaohuilam\UltDebug;
 
 class Store
