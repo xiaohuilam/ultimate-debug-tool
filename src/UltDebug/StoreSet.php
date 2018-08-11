@@ -1,4 +1,5 @@
 <?php
+
 namespace Xiaohuilam\UltDebug;
 
 class StoreSet
@@ -28,8 +29,9 @@ class StoreSet
         $this->accessvalue = preg_replace('/^json\./', '', $this->accessvalue);
         $this->accessvalue = preg_replace('/^param\./', '', $this->accessvalue);
     }
+
     public function set()
     {
-        return 'window.setEntitie("' . $this->key . '", ' . $this->value . ');';
+        return 'window.setEntitie("'.$this->key.'", '.$this->value.');';
     }
 }

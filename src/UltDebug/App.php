@@ -1,4 +1,5 @@
 <?php
+
 namespace Xiaohuilam\UltDebug;
 
 use Illuminate\Support\Facades\View;
@@ -12,14 +13,14 @@ class App
     public $reset_condition = 'false';
 
     /**
-     * 添加一个组
+     * 添加一个组.
      *
      * @param string $group 组名
      * @param array  $data  组内结构
      *
      * @return $this|self
      */
-    public function appendGroup($group = 'GROUP NAME', $data)
+    public function appendGroup($group, $data)
     {
         $this->groups[$group] = $data;
 
@@ -27,7 +28,7 @@ class App
     }
 
     /**
-     * 隐藏暂存框
+     * 隐藏暂存框.
      *
      * @param array $list 暂存框列表
      *
@@ -43,7 +44,7 @@ class App
     }
 
     /**
-     * 重置条件
+     * 重置条件.
      *
      * @param string $condition_if 条件
      *
@@ -52,11 +53,12 @@ class App
     public function resetIf($condition_if = 'json.code == 2015')
     {
         $this->reset_condition = $condition_if;
+
         return $this;
     }
 
     /**
-     * 成功条件
+     * 成功条件.
      *
      * @param string $condition_if_success 条件
      *
@@ -65,11 +67,12 @@ class App
     public function successIf($condition_if_success = 'json.code == 10000')
     {
         $this->condition = $condition_if_success;
+
         return $this;
     }
 
     /**
-     * 失败消息
+     * 失败消息.
      *
      * @param string $the_way_to_pick_msg 取出失败消息表达式
      *
@@ -78,6 +81,7 @@ class App
     public function msgIfFail($the_way_to_pick_msg = 'json.msg')
     {
         $this->msg_if_fail = $the_way_to_pick_msg;
+
         return $this;
     }
 
@@ -88,6 +92,6 @@ class App
      */
     public function render()
     {
-        return View::make('debug_tool.index', (array)$this)->render();
+        return View::make('debug_tool.index', (array) $this)->render();
     }
 }
