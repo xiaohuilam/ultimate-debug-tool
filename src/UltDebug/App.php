@@ -19,7 +19,7 @@ class App
      *
      * @return $this|self
      */
-    public function appendGroup(string $group = 'GROUP NAME', $data)
+    public function appendGroup($group = 'GROUP NAME', $data)
     {
         $this->groups[$group] = $data;
 
@@ -33,7 +33,7 @@ class App
      *
      * @return $this|self
      */
-    public function hideEntities(array $list = [])
+    public function hideEntities($list = [])
     {
         foreach ($list as $k => $v) {
             $this->hide_entities[$v] = 1;
@@ -49,7 +49,7 @@ class App
      *
      * @return $this|self
      */
-    public function resetIf(string $condition_if = 'json.code == 2015')
+    public function resetIf($condition_if = 'json.code == 2015')
     {
         $this->reset_condition = $condition_if;
         return $this;
@@ -62,7 +62,7 @@ class App
      *
      * @return $this|self
      */
-    public function successIf(string $condition_if_success = 'json.code == 10000')
+    public function successIf($condition_if_success = 'json.code == 10000')
     {
         $this->condition = $condition_if_success;
         return $this;
@@ -75,7 +75,7 @@ class App
      *
      * @return $this|self
      */
-    public function msgIfFail(string $the_way_to_pick_msg = 'json.msg')
+    public function msgIfFail($the_way_to_pick_msg = 'json.msg')
     {
         $this->msg_if_fail = $the_way_to_pick_msg;
         return $this;
