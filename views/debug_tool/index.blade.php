@@ -173,41 +173,43 @@
             var auth = window.authorization;
             document.querySelector('.btn').setAttribute('disabled', 'disabled');
 
+            let options = request_hook({
+                method: 'undefined' == typeof action.method ? 'POST' : action.method,
+                headers: {
+                    "Authorization": 'Bearer ' + auth,
+                    "Content-Type": "application/json"
+                },
+                dataType: 'json',
+                timeout: window._timeout,
+            });
+
+            if (options.method == 'POST') {
+                options.body = JSON.stringify(action.data);
+            } else if (options.method == 'GET') {
+                options.url += '?' + new URLSearchParams(action.data)
+            }
+
             fetch(
                 action.url,
-                request_hook(
-                    {
-                        method: 'undefined' == typeof action.method ? 'POST' : action.method,
-                        body: JSON.stringify(action.data),
-                        headers: {
-                            "Authorization": 'Bearer ' + auth,
-                            "Content-Type": "application/json"
-                        },
-                        dataType: 'json',
-                        timeout: window._timeout,
-                    }
-                )
+                options
             ).then(
                 function (response) {
                     response.json().then(
                         function (json) {
                             if ({!!$condition!!}) {
-                        document.querySelector('#log').innerHTML = document.querySelector('#log').innerHTML + response.url + ' OK' + ' ' + '\r\n';
-                    } else {
-                        window.i = 0;
-                        document.querySelector('#log').innerHTML = document.querySelector('#log').innerHTML + response.url + ' FAIL ' + {!!$msg_if_fail!!} + ' ' + '\r\n'; return;
-                }
+                                document.querySelector('#log').innerHTML = document.querySelector('#log').innerHTML + response.url + ' OK' + ' ' + '\r\n';
+                            } else {
+                                window.i = 0;
+                                document.querySelector('#log').innerHTML = document.querySelector('#log').innerHTML + response.url + ' FAIL ' + {!!$msg_if_fail!!} + ' ' + '\r\n'; return;
+                            }
 
-                cb(json);
-        },
-        function(reason) {
-            window.i = 0;
-        }
+                            cb(json);
+                        },
+                        function(reason) {
+                            window.i = 0;
+                        }
                     )
-                },
-        function(reason) {
-
-        }
+                }
             );
         };
         var ultimate_unit = function (a) {
@@ -256,6 +258,8 @@
     </script>
     <script>
         var request_hook = function (payload) {
+            //payload.headers["X-CSRF-TOKEN"] = "...";
+            return payload;
         };
     </script>
 </body>
