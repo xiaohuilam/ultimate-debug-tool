@@ -83,6 +83,7 @@
                                             window.maps['{{$btn_key}}'].push(
                                                 {
                                                     url: step.url,
+                                                    method: 'undefined' == typeof step.method ? 'POST': step.method,
                                                     data: step.data,
                                                     callback: function (param, json) {
                                                         var done = step.done;
