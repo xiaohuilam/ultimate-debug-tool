@@ -176,7 +176,7 @@
                 action.url,
                 request_hook(
                     {
-                        method: 'POST',
+                        method: 'undefined' == typeof action.method ? 'POST' : action.method,
                         body: JSON.stringify(action.data),
                         headers: {
                             "Authorization": 'Bearer ' + auth,
